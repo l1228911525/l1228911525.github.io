@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://l1228911525.github.io</id>
     <title>Gridea</title>
-    <updated>2021-02-16T13:21:43.245Z</updated>
+    <updated>2021-02-16T13:23:57.067Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://l1228911525.github.io"/>
     <link rel="self" href="https://l1228911525.github.io/atom.xml"/>
@@ -22,45 +22,48 @@
 示例的UML：<br>
 <img src="https://l1228911525.github.io/post-images/1613480269210.PNG" alt="" loading="lazy"><br>
 示例代码：</p>
-<p>// Mouse及其子类DellMouse、HpMouse代码<br>
-// Mouse<br>
-public interface Mouse {<br>
-void sayHi();<br>
-}<br>
-// DellMouse<br>
-public class DellMouse implements Mouse{<br>
-public void sayHi() {<br>
-System.out.println(&quot;我是戴尔鼠标&quot;);<br>
-}<br>
-}<br>
-// HpMouse<br>
-public class HpMouse implements Mouse {<br>
-public void sayHi() {<br>
-System.out.println(&quot;我是惠普鼠标&quot;);<br>
-}<br>
-}</p>
-<p>// Mouse工厂类<br>
-public class MouseFactory {<br>
-public static Mouse createMouse(int type) {<br>
-switch(type) {<br>
-case 0:<br>
-return new DellMouse();<br>
-case 1:<br>
-return new HpMouse();<br>
-}<br>
-// 默认是戴尔鼠标<br>
-return new DellMouse();<br>
-}<br>
-}</p>
-<p>// 测试类<br>
-public class Test() {<br>
-public static void main(String[] args) {<br>
-// 传入1 则生产戴尔鼠标<br>
-Mouse dellMouse = MouseFactory.createMouse(1);<br>
-// 传入2 则生产惠普鼠标<br>
-Mouse hpMouse = MouseFacotry.creaateMouse(2);<br>
-}<br>
-}</p>
+<pre><code class="language-java">// Mouse及其子类DellMouse、HpMouse代码
+// Mouse
+public interface Mouse {
+    void sayHi();
+}
+// DellMouse
+public class DellMouse implements Mouse{
+    public void sayHi() {
+        System.out.println(&quot;我是戴尔鼠标&quot;);
+    }
+}
+// HpMouse
+public class HpMouse implements Mouse {
+    public void sayHi() {
+        System.out.println(&quot;我是惠普鼠标&quot;);
+    }
+}
+</code></pre>
+<pre><code class="language-java">// Mouse工厂类
+public class MouseFactory {
+    public static Mouse createMouse(int type) {
+        switch(type) {
+            case 0:
+                return new DellMouse();
+            case 1: 
+                return new HpMouse();
+        }
+        // 默认是戴尔鼠标
+        return new DellMouse();
+    }
+}
+</code></pre>
+<pre><code class="language-java">// 测试类
+public class Test() {
+    public static void main(String[] args) {
+        // 传入1 则生产戴尔鼠标
+        Mouse dellMouse = MouseFactory.createMouse(1);
+        // 传入2 则生产惠普鼠标
+        Mouse hpMouse = MouseFacotry.creaateMouse(2);
+    }
+}
+</code></pre>
 ]]></content>
     </entry>
     <entry>
