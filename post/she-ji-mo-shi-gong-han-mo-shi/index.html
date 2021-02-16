@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://l1228911525.github.io/favicon.ico?v=1613480275797">
+<link rel="shortcut icon" href="https://l1228911525.github.io/favicon.ico?v=1613481222171">
 <link rel="stylesheet" href="https://l1228911525.github.io/styles/main.css">
 
 
@@ -23,7 +23,10 @@
 示例：
 示例的UML：
 
-..." />
+示例代码：
+// Mouse及其子类DellMouse、HpMouse代码
+// Mouse
+public interfa..." />
     <meta name="keywords" content="慕课网,spring源码轻松学,设计模式" />
   </head>
   <body>
@@ -33,7 +36,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://l1228911525.github.io">
-        <img src="https://l1228911525.github.io/images/avatar.png?v=1613480275797" class="site-logo">
+        <img src="https://l1228911525.github.io/images/avatar.png?v=1613481222171" class="site-logo">
         <h1 class="site-title">Gridea</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -103,7 +106,50 @@
 <p>概述：简单工厂模式就是定义一个工厂类，根据传入的参数的值不同返回不同的实例。<br>
 示例：<br>
 示例的UML：<br>
-<img src="https://l1228911525.github.io/post-images/1613480269210.PNG" alt="" loading="lazy"></p>
+<img src="https://l1228911525.github.io/post-images/1613480269210.PNG" alt="" loading="lazy"><br>
+示例代码：</p>
+<pre><code class="language-java">// Mouse及其子类DellMouse、HpMouse代码
+// Mouse
+public interface Mouse {
+    void sayHi();
+}
+// DellMouse
+public class DellMouse implements Mouse{
+    public void sayHi() {
+        System.out.println(&quot;我是戴尔鼠标&quot;);
+    }
+}
+// HpMouse
+public class HpMouse implements Mouse {
+    public void sayHi() {
+        System.out.println(&quot;我是惠普鼠标&quot;);
+    }
+}
+</code></pre>
+<pre><code class="language-java">// Mouse工厂类
+public class MouseFactory {
+    public static Mouse createMouse(int type) {
+        switch(type) {
+            case 0:
+                return new DellMouse();
+            case 1: 
+                return new HpMouse();
+        }
+        // 默认是戴尔鼠标
+        return new DellMouse();
+    }
+}
+</code></pre>
+<pre><code class="language-java">// 测试类
+public class Test() {
+    public static void main(String[] args) {
+        // 传入1 则生产戴尔鼠标
+        Mouse dellMouse = MouseFactory.createMouse(1);
+        // 传入2 则生产惠普鼠标
+        Mouse hpMouse = MouseFacotry.creaateMouse(2);
+    }
+}
+</code></pre>
 
             </div>
             
