@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://l1228911525.github.io/favicon.ico?v=1613484444574">
+<link rel="shortcut icon" href="https://l1228911525.github.io/favicon.ico?v=1613554978285">
 <link rel="stylesheet" href="https://l1228911525.github.io/styles/main.css">
 
 
@@ -20,13 +20,13 @@
 
     <meta name="description" content="简单工厂模式
 概述：简单工厂模式就是定义一个工厂类，根据传入的参数的值不同返回不同的实例。
+优缺点：
+实现相对比较简单，但是如果需要添加分类，则需要修改MouseFactory类的源代码，违背了开闭原则
 示例：
 示例UML：
 
 示例代码：
-// Mouse及其子类DellMouse、HpMouse代码
-// Mouse
-public interfac..." />
+..." />
     <meta name="keywords" content="慕课网,spring源码轻松学,设计模式" />
   </head>
   <body>
@@ -36,7 +36,7 @@ public interfac..." />
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://l1228911525.github.io">
-        <img src="https://l1228911525.github.io/images/avatar.png?v=1613484444574" class="site-logo">
+        <img src="https://l1228911525.github.io/images/avatar.png?v=1613554978285" class="site-logo">
         <h1 class="site-title">Gridea</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -104,6 +104,8 @@ public interfac..." />
             <div class="post-content" v-pre>
               <h1 id="简单工厂模式">简单工厂模式</h1>
 <p>概述：简单工厂模式就是定义一个工厂类，根据传入的参数的值不同返回不同的实例。<br>
+优缺点：<br>
+实现相对比较简单，但是如果需要添加分类，则需要修改MouseFactory类的源代码，违背了开闭原则<br>
 示例：<br>
 示例UML：<br>
 <img src="https://l1228911525.github.io/post-images/1613482179667.PNG" alt="" loading="lazy"><br>
@@ -151,6 +153,45 @@ public class Test() {
 }
 </code></pre>
 <h1 id="工厂方法模式">工厂方法模式</h1>
+<p>概述：工厂类也实现继承关系，不同的对象类用不同的工厂来生产。这样就解决了简单工厂模式添加分类时违背开闭原则的问题。<br>
+示例：<br>
+示例UML：<br>
+<img src="https://l1228911525.github.io/post-images/1613553528419.PNG" alt="" loading="lazy"><br>
+示例代码：</p>
+<pre><code>// Mouse及其子类的代码和上面的一致
+//  MouseFactory及其子类的代码
+public interface MouseFactory {
+    Mouse createMouse();
+}
+
+public class DellMouseFactory implements MouseFactory {
+    public Mouse createMouse() {
+        return new DellMouse();
+    }
+}
+
+public class HpMouseFactory implements MouseFactory {
+    public Mouse createMouse() {
+        return new HpMouse();
+    }
+}
+</code></pre>
+<pre><code>// 测试代码
+public class FactoryMethodDemo {
+    public static void main(String[] args) {
+        // 惠普鼠标就用惠普工厂生产
+        MouseFactory hpMf = new HpMouseFactory();
+        Mouse hpMouse = hpMf.createMouse();
+        // 戴尔鼠标就用戴尔工厂生产
+        MouseFactory dlMf = new DellMouseFactory();
+        Mouse dlMouse = dlMf.createMouse();
+        hpMouse.sayHi();
+        dlMouse.sayHi();
+
+    }
+}
+</code></pre>
+<h1 id="抽象工厂模式">抽象工厂模式</h1>
 
             </div>
             
