@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://l1228911525.github.io/favicon.ico?v=1613554978285">
+<link rel="shortcut icon" href="https://l1228911525.github.io/favicon.ico?v=1613583109243">
 <link rel="stylesheet" href="https://l1228911525.github.io/styles/main.css">
 
 
@@ -36,7 +36,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://l1228911525.github.io">
-        <img src="https://l1228911525.github.io/images/avatar.png?v=1613554978285" class="site-logo">
+        <img src="https://l1228911525.github.io/images/avatar.png?v=1613583109243" class="site-logo">
         <h1 class="site-title">Gridea</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -192,6 +192,88 @@ public class FactoryMethodDemo {
 }
 </code></pre>
 <h1 id="抽象工厂模式">抽象工厂模式</h1>
+<p>描述：提供一个创建一系列相关或者相互依赖对象的接口。<br>
+示例：<br>
+示例UML：<br>
+<img src="https://l1228911525.github.io/post-images/1613582618139.PNG" alt="" loading="lazy"><br>
+示例代码：</p>
+<pre><code class="language-java">// Mouse
+public interface Mouse {
+    void sayHi();
+}
+// HpMouse
+public class HpMouse implements Mouse {
+    public void sayHi() {
+        System.out.println(&quot;我是惠普鼠标&quot;);
+    }
+}
+// DellMouse
+public class DellMouse implements Mouse {
+    public void sayHi() {
+        System.out.println(&quot;我是戴尔鼠标&quot;);
+    }
+}
+
+// Keyboard
+public interface Keyboard {
+    void sayHello();
+}
+// HpKeyboard
+public class HpKeyboard implements Keyboard {
+    @Override
+    public void sayHello() {
+        System.out.println(&quot;我是惠普键盘&quot;);
+    }
+}
+// DellKeyboard
+public class DellKeyboard implements Keyboard {
+    @Override
+    public void sayHello() {
+        System.out.println(&quot;我是戴尔键盘&quot;);
+    }
+}
+</code></pre>
+<pre><code class="language-java">//
+public interface ComputerFactory {
+    Mouse createMouse();
+    Keyboard createKeyboard();
+}
+public class DellComputerFactory implements ComputerFactory {
+    @Override
+    public Mouse createMouse() {
+        return new DellMouse();
+    }
+
+    @Override
+    public Keyboard createKeyboard() {
+        return new DellKeyboard();
+    }
+}
+public class HpComputerFactory implements ComputerFactory {
+    @Override
+    public Mouse createMouse() {
+        return new HpMouse();
+    }
+
+    @Override
+    public Keyboard createKeyboard() {
+        return new HpKeyboard();
+    }
+}
+</code></pre>
+<pre><code class="language-java">// 测试代码
+public class AbstractFactoryDemo {
+    public static void main(String[] args) {
+        ComputerFactory cf = new HpComputerFactory();
+        Mouse mouse = cf.createMouse();
+        Keyboard keyboard = cf.createKeyboard();
+
+        mouse.sayHi();
+        keyboard.sayHello();
+
+    }
+}
+</code></pre>
 
             </div>
             
