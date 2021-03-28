@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>org.w3c.dom解析XML文档 | Gridea</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://l1228911525.github.io/favicon.ico?v=1616913822490">
+<link rel="stylesheet" href="https://l1228911525.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="转载：https://blog.csdn.net/gxftry1st/article/details/59483792
+位于org.w3c.dom操作XML会比较简单，就是将XML看做是一颗树，DOM就是对这颗树的一个数据结构的描述，但对大..." />
+    <meta name="keywords" content="dom,xml" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://l1228911525.github.io">
+        <img src="https://l1228911525.github.io/images/avatar.png?v=1616913822490" class="site-logo">
+        <h1 class="site-title">Gridea</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://l1228911525.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">org.w3c.dom解析XML文档</h2>
+            <div class="post-date">2021-03-28</div>
+            
+            <div class="post-content" v-pre>
+              <p>转载：https://blog.csdn.net/gxftry1st/article/details/59483792<br>
+位于org.w3c.dom操作XML会比较简单，就是将XML看做是一颗树，DOM就是对这颗树的一个数据结构的描述，但对大型XML文件效果可能会不理想</p>
+<h2 id="首先来了解点java-dom-的-api">首先来了解点Java DOM 的 API:</h2>
+<p><strong>1.解析器工厂类：DocumentBuilderFactory</strong><br>
+创建的方法：DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();</p>
+<p><strong>2.解析器：DocumentBuilder</strong><br>
+创建方法：通过解析器工厂类来获得 DocumentBuilder db = dbf.newDocumentBuilder();</p>
+<p><strong>3.文档树模型Document</strong><br>
+创建方法：a.通过xml文档 Document doc = db.parse(&quot;bean.xml&quot;);  b.将需要解析的xml文档转化为输入流 InputStream is = new FileInputStream(&quot;bean.xml&quot;);<br>
+Document doc = db.parse(is);<br>
+Document对象代表了一个XML文档的模型树，所有的其他Node都以一定的顺序包含在Document对象之内，排列成一个树状结构，以后对XML文档的所有操作都与解析器无关，</p>
+<p>直接在这个Document对象上进行操作即可；</p>
+<p>包含的方法：<br>
+<strong>4.节点列表类NodeList</strong><br>
+NodeList代表了一个包含一个或者多个Node的列表，根据操作可以将其简化的看做为数组</p>
+<p><strong>5.节点类Node</strong><br>
+Node对象是DOM中最基本的对象，代表了文档树中的抽象节点。但在实际使用中很少会直接使用Node对象，而是使用Node对象的子对象Element,Attr,Text等</p>
+<p><strong>6.元素类Element</strong><br>
+是Node类最主要的子对象，在元素中可以包含属性，因而Element中有存取其属性的方法</p>
+<p><strong>7.属性类Attr</strong><br>
+代表某个元素的属性，虽然Attr继承自Node接口，但因为Attr是包含在Element中的，但并不能将其看做是Element的子对象，因为Attr并不是DOM树的一部分</p>
+<p>基本的知识就到此结束，更加具体的大家可以参阅JDK API文档</p>
+<h2 id="code">CODE</h2>
+<p>XML文件</p>
+<pre><code class="language-xml">&lt;?xml version = &quot;1.0&quot; encoding = &quot;utf-8&quot;?&gt;
+
+&lt;School&gt;
+  &lt;Student&gt;
+    &lt;Name&gt;沈浪&lt;/Name&gt;
+    &lt;Name&gt;LQYYY&lt;/Name&gt;
+    &lt;Num&gt;1006010022&lt;/Num&gt;
+    &lt;Classes&gt;信管2&lt;/Classes&gt;
+    &lt;Address&gt;浙江杭州3&lt;/Address&gt;
+    &lt;Tel&gt;123456&lt;/Tel&gt;
+  &lt;/Student&gt;
+  &lt;Student&gt;
+    &lt;Name&gt;沈1&lt;/Name&gt;
+    &lt;Num&gt;1006010033&lt;/Num&gt;
+    &lt;Classes&gt;信管1&lt;/Classes&gt;
+    &lt;Address&gt;浙江杭州4&lt;/Address&gt;
+    &lt;Tel&gt;234567&lt;/Tel&gt;
+  &lt;/Student&gt;
+  &lt;Student&gt;
+    &lt;Name&gt;沈2&lt;/Name&gt;
+    &lt;Num&gt;1006010044&lt;/Num&gt;
+    &lt;Classes&gt;生工2&lt;/Classes&gt;
+    &lt;Address&gt;浙江杭州1&lt;/Address&gt;
+    &lt;Tel&gt;345678&lt;/Tel&gt;
+  &lt;/Student&gt;
+  &lt;Student&gt;
+    &lt;Name&gt;沈3&lt;/Name&gt;
+    &lt;Num&gt;1006010055&lt;/Num&gt;
+    &lt;Classes&gt;电子2&lt;/Classes&gt;
+    &lt;Address&gt;浙江杭州2&lt;/Address&gt;
+    &lt;Tel&gt;456789&lt;/Tel&gt;
+  &lt;/Student&gt;
+&lt;/School&gt;
+</code></pre>
+<pre><code class="language-java">import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.FileOutputStream;
+
+public class DomDemo {
+
+  /**
+   * 遍历xml文档
+   * */
+  public static void queryXml(){
+    try{
+      //得到DOM解析器的工厂实例
+      DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+      //从DOM工厂中获得DOM解析器
+      DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
+      //把要解析的xml文档读入DOM解析器
+      Document doc = dbBuilder.parse(&quot;src/main/java/com/liao/dom/testDom.xml&quot;);
+      System.out.println(&quot;处理该文档的DomImplementation对象  = &quot;+ doc.getImplementation());
+      //得到文档名称为Student的元素的节点列表
+      NodeList nList = doc.getElementsByTagName(&quot;School&quot;);
+      Element item = (Element)nList.item(0);
+      nList = item.getElementsByTagName(&quot;Student&quot;);
+      //遍历该集合，显示结合中的元素及其子元素的名字
+      for(int i = 0; i&lt; nList.getLength() ; i ++){
+        Element node = (Element)nList.item(i);
+        System.out.println(&quot;Name: &quot;+ node.getElementsByTagName(&quot;Name&quot;).item(0).getFirstChild().getNodeValue());
+        System.out.println(&quot;Num: &quot;+ node.getElementsByTagName(&quot;Num&quot;).item(0).getFirstChild().getNodeValue());
+        System.out.println(&quot;Classes: &quot;+ node.getElementsByTagName(&quot;Classes&quot;).item(0).getFirstChild().getNodeValue());
+        System.out.println(&quot;Address: &quot;+ node.getElementsByTagName(&quot;Address&quot;).item(0).getFirstChild().getNodeValue());
+        System.out.println(&quot;Tel: &quot;+ node.getElementsByTagName(&quot;Tel&quot;).item(0).getFirstChild().getNodeValue());
+      }
+
+    }catch (Exception e) {
+      // TODO: handle exception
+      e.printStackTrace();
+    }
+  }
+  public static void main(String[] args){
+    //读取
+    DomDemo.queryXml();
+  }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://l1228911525.github.io/tag/aOKO2luRb/" class="tag">
+                    dom
+                  </a>
+                
+                  <a href="https://l1228911525.github.io/tag/hBOBocd_CA/" class="tag">
+                    xml
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://l1228911525.github.io/post/she-ji-mo-shi-ruan-jian-she-ji-qi-da-yuan-ze/">
+                  <h3 class="post-title">
+                    设计模式-软件设计七大原则
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
