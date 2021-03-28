@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>设计模式-软件设计七大原则 | Gridea</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://l1228911525.github.io/favicon.ico?v=1616911318402">
+<link rel="stylesheet" href="https://l1228911525.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="七大原则
+1.开闭原则
+2.依赖倒置原则
+3.单一职责原则
+4.接口隔离原则
+5.迪米特法则（最少知道原则）
+6.里氏替换原则
+7.合成/复用原则
+开闭原则
+定义：一个软件实体如类、模块和函数应该对扩展，对修改关闭。
+用抽象构建框架，用实现..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://l1228911525.github.io">
+        <img src="https://l1228911525.github.io/images/avatar.png?v=1616911318402" class="site-logo">
+        <h1 class="site-title">Gridea</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://l1228911525.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">设计模式-软件设计七大原则</h2>
+            <div class="post-date">2021-02-21</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="七大原则">七大原则</h1>
+<p>1.开闭原则<br>
+2.依赖倒置原则<br>
+3.单一职责原则<br>
+4.接口隔离原则<br>
+5.迪米特法则（最少知道原则）<br>
+6.里氏替换原则<br>
+7.合成/复用原则</p>
+<h1 id="开闭原则">开闭原则</h1>
+<p>定义：一个软件实体如类、模块和函数应该对扩展，对修改关闭。<br>
+用抽象构建框架，用实现扩展细节<br>
+优点：提高软件系统的可复用性以及可维护性</p>
+<h2 id="code">code</h2>
+<p>需求：实现一个课程信息类</p>
+<blockquote>
+<p>第一个版本的UML<br>
+<img src="https://l1228911525.github.io/post-images/1613893672117.PNG" alt="" loading="lazy"><br>
+第一个版本的代码</p>
+</blockquote>
+<pre><code class="language-java">// ICourse
+public interface ICourse {
+    Integer getId();
+    String getName();
+    Double getPrice();
+    Double getDiscountPrice();
+}
+</code></pre>
+<pre><code class="language-java">public class JavaCourse implements ICourse {
+    private Integer id;
+    private String name;
+    private Double price;
+
+    public JavaCourse(Integer id, String name, Double price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
+    @Override
+    public Integer getId() {
+        return this.id;
+    }
+    @Override
+    public String getName() {
+        return this.name;
+    }
+    @Override
+    public Double getPrice() {
+        return this.price;
+    }
+}
+</code></pre>
+<pre><code class="language-java">// test
+public class Test{
+    public static void main(String[] args) {
+        ICourse javaCourse = new JavaCourse(96, &quot;Java从零到企业级电商开发&quot;, 34d);
+        System.out.println(&quot;课程ID:&quot;+javaCourse.getId+&quot;课程名称:&quot;+javaCourse.getName()+&quot;价格:&quot;+javaCourse.getPrice());
+    }
+}
+</code></pre>
+<p>现在出现了新的需求：java课程需要打折。<br>
+针对这个需求有两个解决方案：<br>
+1.直接在ICourse和JavaCourse进行修改</p>
+<pre><code>// ICourse内添加如下代码
+Double getDiscountPrice();
+</code></pre>
+<pre><code class="language-java">// JavaCourse
+    @Override
+    public Double getDiscountPrice() {
+        return this.price * 0.8;
+    }
+</code></pre>
+<p>结论：这种方式违背了开闭原则，即对修改关闭。<br>
+2.新增一个新的类JavaDiscountCourse继承JavaCourse，在JavaDiscountCourse内实现打折功能。</p>
+<blockquote>
+<p>第二个版本的代码</p>
+</blockquote>
+<pre><code class="language-java">public class JavaDiscountCourse extends JavaCourse {
+    public JavaDiscountCourse(Integer id, String name, Double price) {
+        super(id, name, price);
+    }
+
+    @Override
+    public Double getPrice() {
+        return super.getPrice() * 0.8;
+    }
+}
+</code></pre>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://l1228911525.github.io/post/zhu-jie-ji-chu-zhi-shi/">
+                  <h3 class="post-title">
+                    注解-基础知识
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>反射-基础知识 | Gridea</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://l1228911525.github.io/favicon.ico?v=1616911318402">
+<link rel="stylesheet" href="https://l1228911525.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="基本概念
+描述：反射允许程序在运行时进行自我检测并对内部的成员进行操作。反射主要是指程序可以访问、检测和修改它本身状态或行为的一种能力，并能根据自身行为的状态和结果，调整或修改应用描述行为的状态和相关的语义。
+反射机制的作用
+1.在运行时判..." />
+    <meta name="keywords" content="javase,慕课网,spring源码轻松学" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://l1228911525.github.io">
+        <img src="https://l1228911525.github.io/images/avatar.png?v=1616911318402" class="site-logo">
+        <h1 class="site-title">Gridea</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://l1228911525.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">反射-基础知识</h2>
+            <div class="post-date">2021-02-18</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="基本概念">基本概念</h1>
+<p>描述：反射允许程序在<strong>运行时</strong>进行自我检测并对内部的成员进行操作。反射主要是指程序可以访问、检测和修改它本身状态或行为的一种能力，并能根据自身行为的状态和结果，调整或修改应用描述行为的状态和相关的语义。</p>
+<h1 id="反射机制的作用">反射机制的作用</h1>
+<p>1.在运行时判断任意一个对象所属的类<br>
+2.在运行时获取类的对象<br>
+3.在运行时访问java对象的熟悉、方法、构造方法等</p>
+<h1 id="javalangreflect类库里面主要的类">java.lang.reflect类库里面主要的类</h1>
+<p>Field：表示类中的成员变量<br>
+Method：表示类中的方法<br>
+Constructor：表示类的构造方法<br>
+Array：该类提供了动态创建数组和访问数组元素的静态方法</p>
+<h1 id="反射依赖的class">反射依赖的Class</h1>
+<p>描述：class用来表示运行时类型信息的对应类<br>
+特点：<br>
+1.每个类都有唯一一个与之相对应的Class对象<br>
+2.Class类为类类型，而Class对象为类类型对象</p>
+<h1 id="class类的特点">Class类的特点</h1>
+<pre><code>1.Class类也是类的一种，class则是关键字
+2.Class类只有一个私有的构造函数，只有JVM能够创建Class类的实例
+3.JVM中只有唯一一个和类相对应的Class对象来描述其类型信息
+</code></pre>
+<h1 id="获取class对象的三种方式">获取Class对象的三种方式</h1>
+<pre><code>1.Object  --&gt;  getClass()
+2.任何数据类型（包括基本数据类型）都有一个&quot;静态&quot;的class属性
+3.通过Class类的静态方法：forName(String className)(常用)
+</code></pre>
+<p>实例代码：</p>
+<pre><code class="language-java">public class ReflectTarget {
+    public static void main(String[] args) throws ClassNotFoundException {
+        // 第一种方式获取class对象
+        ReflectTarget reflectTarget = new ReflectTarget();
+
+        Class reflectTargetClass1 = reflectTarget.getClass();
+
+        Class reflectTargetClass2 = ReflectTarget.class;
+
+        Class reflectTargetClass3 = Class.forName(&quot;com.inooc.reflect.ReflectTarget&quot;);
+        
+        System.out.println(reflectTargetClass1.getName());
+        System.out.println(reflectTargetClass2.getName());
+        System.out.println(reflectTargetClass1 == reflectTargetClass2);
+        System.out.println(reflectTargetClass1 == reflectTargetClass3);
+    }
+}
+</code></pre>
+<h1 id="反射之获取并操作构造函数">反射之获取并操作构造函数</h1>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://l1228911525.github.io/tag/yyITlFpB7/" class="tag">
+                    javase
+                  </a>
+                
+                  <a href="https://l1228911525.github.io/tag/vHyIil_qE/" class="tag">
+                    慕课网
+                  </a>
+                
+                  <a href="https://l1228911525.github.io/tag/qbsQOaz80w/" class="tag">
+                    spring源码轻松学
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://l1228911525.github.io/post/she-ji-mo-shi-gong-han-mo-shi/">
+                  <h3 class="post-title">
+                    设计模式-工厂模式
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
